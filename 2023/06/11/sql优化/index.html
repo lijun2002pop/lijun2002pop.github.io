@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <!-- Title -->
-<title>李俊的技术专栏</title>
+<title>sql优化 - 李俊的技术专栏</title>
 
 <!-- Icon -->
 <link rel="icon" href="https://d33wubrfki0l68.cloudfront.net/6657ba50e702d84afb32fe846bed54fba1a77add/827ae/logo.svg">
@@ -82,77 +82,60 @@
     }
 </script>
 
-                <div class="post-list-container">
-    <div class="post-inner">
-        
-            <article class="post gt-bg-theme-color-second">
-                <div class="post-left">
-                    
-                    <a href="/2023/06/11/sql%E4%BC%98%E5%8C%96/">
-                        <span class="post-title gt-c-content-color-first">sql优化</span>
-                    </a>
-                    <div class="gt-post-content post-abstract gt-c-content-color-second">
-                        <p></p>
-                    </div>
-                    <div class="post-info">
-                        <span>
-                            <time class="post-time gt-c-content-color-first">
-                                · 2023-06-11 ·
-                            </time>
-                            
-                        </span>
-                    </div>
-                </div>
+                <div class="post-container">
+    <div class="post-detail gt-bg-theme-color-second gt-c-content-color-first">
+        <article class="gt-post-content">
+            <h1 class="post-title">sql优化</h1>
+            <div class="post-info">
+                <time class="post-time gt-c-content-color-first">
+                    · 2023-06-11 ·</time>
                 
-            </article>
-        
-            <article class="post gt-bg-theme-color-second">
-                <div class="post-left">
                     
-                    <a href="/2023/05/10/demo/">
-                        <span class="post-title gt-c-content-color-first">(无标题)</span>
-                    </a>
-                    <div class="gt-post-content post-abstract gt-c-content-color-second">
-                        <p></p>
-                    </div>
-                    <div class="post-info">
-                        <span>
-                            <time class="post-time gt-c-content-color-first">
-                                · 2023-05-10 ·
-                            </time>
-                            
-                        </span>
-                    </div>
-                </div>
                 
-            </article>
-        
-            <article class="post gt-bg-theme-color-second">
-                <div class="post-left">
-                    
-                    <a href="/2023/04/02/hello-world/">
-                        <span class="post-title gt-c-content-color-first">Hello World</span>
-                    </a>
-                    <div class="gt-post-content post-abstract gt-c-content-color-second">
-                        <p></p>
-                    </div>
-                    <div class="post-info">
-                        <span>
-                            <time class="post-time gt-c-content-color-first">
-                                · 2023-04-02 ·
-                            </time>
-                            
-                        </span>
-                    </div>
-                </div>
-                
-            </article>
-        
-    </div>
-</div>
+            </div>
+            <hr>
+            <div class="post-content gt-c-content-color-first">
+                <h1 id="sql优化"><a href="#sql优化" class="headerlink" title="sql优化"></a>sql优化</h1><blockquote>
+<p>优化成本：硬件&gt;系统配置&gt;数据库表结构&gt;SQL及索引</p>
+<p>优化效果：硬件&lt;系统配置&lt;数据库表结构&lt;SQL及索引</p>
+</blockquote>
+<h2 id="MySQL优化的五个原则"><a href="#MySQL优化的五个原则" class="headerlink" title="MySQL优化的五个原则"></a>MySQL优化的五个原则</h2><ol>
+<li>减少数据访问： 设置合理的字段类型，启用压缩，通过索引访问等减少磁盘IO</li>
+<li>返回更少的数据： 只返回需要的字段和数据分页处理 减少磁盘io及网络io</li>
+<li>减少交互次数： 批量DML操作，函数存储等减少数据连接次数</li>
+<li>减少服务器CPU开销： 尽量减少数据库排序操作以及全表查询，减少cpu 内存占用</li>
+<li>利用更多资源： 使用表分区，可以增加并行操作，更大限度利用cpu资源</li>
+</ol>
+<p>总结</p>
+<blockquote>
+<ul>
+<li>最大化利用索引；</li>
+<li>尽可能避免全表扫描；</li>
+<li>减少无效数据的查询；</li>
+</ul>
+</blockquote>
 
-<div class="pagination-container">
+            </div>
+        </article>
+    </div>
+    <br>
     
+        <div class="next-prev-post">
+            
+            
+                <div class="next-post">
+                    <div class="next gt-c-content-color-first">
+                        下一篇：<a href="/2023/05/10/demo/" 
+                            class="post-title gt-a-link"></a>
+                    </div>
+                </div>
+            
+        </div>
+    
+    
+
+    
+
     
 </div>
 
