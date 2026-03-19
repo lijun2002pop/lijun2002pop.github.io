@@ -9,7 +9,7 @@ lerna-debug.log*
 # Hexo generated files
 public/
 .deploy*/
-
+db.json
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

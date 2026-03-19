@@ -105,4 +105,7 @@ theme: insnow
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
-  type: ''
+  type: git
+  repo: git@github.com:lijun2002pop/lijun2002pop.github.io.git
+  branch: main  # 或 master（根据您的仓库默认分支）
+  message: Deploy Hexo blog to GitHub Pages
