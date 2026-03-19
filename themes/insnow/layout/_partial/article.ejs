@@ -1,0 +1,15 @@
+<div class="article">
+  <%
+    let content=page.content
+    // 处理代码块：移除 article-table 包装，转换为 PrismJS 格式
+    content = content.replace(/<figure class="highlight (\w+)">.*?<td class="code"><pre>(.*?)<\/pre><\/td>.*?<\/figure>/gs, function(match, lang, code) {
+      // 移除代码中的 <br> 标签，并在每个 <span class="line"> 标签之间添加换行符
+      code = code.replace(/<br>/g, '').replace(/(<span class="line">)/g, '\n$1');
+      return '<pre class="language-' + lang + ' line-numbers"><code class="language-' + lang + '">' + code + '</code></pre>';
+    })
+    // 对非代码块的表格进行包装
+    content = content.replace(/<table>/g,'<div class="article-table"><table>')
+      .replace(/<\/table>/g,'</table></div>')
+  %>
+  <%- content %>
+</div>

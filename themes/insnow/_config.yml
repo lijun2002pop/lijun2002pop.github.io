@@ -1,0 +1,13 @@
+# footer链接配置
+footer:
+  github: https://github.com/lijun2002pop
+  wechat: wx:if2024253645
+  mail: mailto:2024253645@qq.com
+  rss: /atom.xml
+# 收藏页面配置
+collection:
+  - title: 稀土掘金热榜
+    link: https://juejin.cn/pins/hot
+  - title: 博客园-嘚惹
+    link: https://www.cnblogs.com/lijun-goods
+    author: ifan
