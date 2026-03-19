@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+  <meta charset="utf-8">
+  
+  <title>
+    
+    git使用
+    
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="me" href="https://mas.uniiem.com/@mizore" />
+  
+<script src="https://cdn.staticfile.org/prism/1.17.1/prism.min.js"></script>
+
+  
+<script src="https://cdn.staticfile.org/prism/1.17.1/plugins/autoloader/prism-autoloader.min.js"></script>
+
+  
+<link rel="stylesheet" href="/css/prism/material-light.css">
+
+  
+<link rel="stylesheet" href="/css/prism/material-dark.css">
+
+  
+<script src="https://cdn.staticfile.org/prism/1.17.1/plugins/line-numbers/prism-line-numbers.min.js"></script>
+
+  
+<link rel="stylesheet" href="https://cdn.staticfile.org/prism/1.17.1/plugins/line-numbers/prism-line-numbers.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&family=Noto+Sans+SC:wght@300&display=swap.css">
+
+  
+<link rel="stylesheet" href="/iconfont/iconfont.css">
+
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="ifan的博客" type="application/atom+xml">
+</head>
+<script>
+  function setIsNight(isNight) {
+    localStorage.setItem('isNight', isNight)
+  }
+
+  function getIsNight() {
+    return localStorage.getItem('isNight')
+  }
+
+  function switchTheme() {
+    let isNight = getIsNight()
+    if (isNight === 'false') {
+      document.documentElement.className = 'dark'
+      document.getElementsByClassName('theme-switcher')[0].textContent = '😴'
+      setIsNight('true')
+    } else {
+      document.documentElement.className = 'light'
+      document.getElementsByClassName('theme-switcher')[0].textContent = '😳'
+      setIsNight('false')
+    }
+  }
+
+  let isNight = getIsNight()
+  if (isNight == null) {
+    isNight = 'false'
+    setIsNight('false')
+  }
+  if (isNight === 'false') {
+    document.documentElement.className = 'light'
+  } else {
+    document.documentElement.className = 'dark'
+  }
+</script>
+
+<body>
+  <div class="show-area">
+    <header>
+  <ul class="nav">
+    <li class="nav-child">
+      <a href="/">首页</a>
+    </li>
+    <li class="nav-child">
+      <a href="/categories">分类</a>
+    </li>
+    <li class="nav-child">
+      <a href="/tags">标签</a>
+    </li>
+    <li class="nav-child">
+      <a href="/about">关于</a>
+    </li>
+    <li class="nav-child">
+      <a href="/collection">收藏</a>
+    </li>
+    <li class="nav-child">
+      <a href="/board">留言</a>
+    </li>
+  </ul>
+  <div class="theme-switcher" onclick="switchTheme()">😳</div>
+  <script>
+    if (isNight === 'false') {
+      document.getElementsByClassName('theme-switcher')[0].textContent = '😳'
+    } else {
+      document.getElementsByClassName('theme-switcher')[0].textContent = '😴'
+    }
+  </script>
+</header>
+    <main class="main-body">
+  <div class="toc-container">
+    <div class="toc-toggle">
+      <i id="toc-b-icon" class="iconfont icon-liebiao-01" onclick="toggleShow()"></i>
+    </div>
+    <ol class="toc"><li class="toc-item toc-level-5"><a class="toc-link" href="#git%E5%85%A8%E5%B1%80%E9%85%8D%E7%BD%AE"><span class="toc-number">1.</span> <span class="toc-text">git全局配置</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E9%85%8D%E7%BD%AE"><span class="toc-number">2.</span> <span class="toc-text">查看配置</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%96%B0%E5%BB%BA%E4%BB%93%E5%BA%93"><span class="toc-number">3.</span> <span class="toc-text">新建仓库</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E5%92%8C%E6%8F%90%E4%BA%A4%E6%96%87%E4%BB%B6"><span class="toc-number">4.</span> <span class="toc-text">添加和提交文件</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6"><span class="toc-number">5.</span> <span class="toc-text">删除文件</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%9B%9E%E9%80%80%E7%89%88%E6%9C%AC"><span class="toc-number">6.</span> <span class="toc-text">回退版本</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E5%B7%AE%E5%BC%82"><span class="toc-number">7.</span> <span class="toc-text">查看差异</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%BF%BD%E7%95%A5%E6%96%87%E4%BB%B6"><span class="toc-number">8.</span> <span class="toc-text">忽略文件</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E4%BB%93%E5%BA%93%E5%85%B3%E8%81%94%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93"><span class="toc-number">9.</span> <span class="toc-text">本地仓库关联远程仓库</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8E%A8%E9%80%81-%E6%8B%89%E5%8F%96%E8%BF%9C%E7%A8%8B%E5%88%86%E6%94%AF"><span class="toc-number">10.</span> <span class="toc-text">推送&#x2F;拉取远程分支</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%88%86%E6%94%AF%E6%93%8D%E4%BD%9C"><span class="toc-number">11.</span> <span class="toc-text">分支操作</span></a></li></ol>
+  </div>
+  
+  <script>
+    var show = false
+    function toggleShow() {
+      if (show) {
+        document.getElementsByClassName('toc')[0].className = 'toc'
+        document.getElementById('toc-b-icon').className = 'iconfont icon-liebiao-01'
+      } else {
+        document.getElementsByClassName('toc')[0].className = 'toc show'
+        document.getElementById('toc-b-icon').className = 'iconfont icon-quxiao-01'
+      }
+      show = !show
+    }
+    document.getElementsByClassName('toc')[0].onclick = toggleShow
+  </script>
+  
+  <div class="article-header">
+    <h1 class="article-title">git使用</h1>
+    <div class="article-details">
+      <div class="article-post-date"><span>Posted at </span> 2026-03-19</div>
+      <div class="article-tags">
+        
+        <a href="/tags/git">#git</a>
+        
+      </div>
+    </div>
+  </div>
+  <div class="article">
+  
+  <h5 id="git全局配置"><a href="#git全局配置" class="headerlink" title="git全局配置"></a>git全局配置</h5><p><code>git config --global user.name &quot;ifan li&quot;</code></p>
+<p><code>git config --global user.email ifan@qq.com</code></p>
+<h5 id="查看配置"><a href="#查看配置" class="headerlink" title="查看配置"></a>查看配置</h5><p><code>git config --global --list</code></p>
+<h5 id="新建仓库"><a href="#新建仓库" class="headerlink" title="新建仓库"></a>新建仓库</h5><ol>
+<li>复制远程仓库</li>
+</ol>
+<p>​	<code>git clone &lt;仓库地址&gt;</code></p>
+<ol start="2">
+<li>创建本地仓库</li>
+</ol>
+<p>​    <code>git init</code> 在当前目录创建仓库</p>
+<p>​	<code>git init &lt;仓库名&gt; </code>  创建指定名称仓库</p>
+<p><img src="/assets/image-20240725104100877.png"></p>
+<h5 id="添加和提交文件"><a href="#添加和提交文件" class="headerlink" title="添加和提交文件"></a>添加和提交文件</h5><p><code>git status</code> 查看状态</p>
+<p><code>git ls-files</code> 查看暂存区文件</p>
+<p><code>git add .</code> 添加文件到暂存区</p>
+<p><code>git add .txt</code> 添加所有.txt文件到暂存区</p>
+<p><code>git commit -m &#39;提交信息&#39;</code> 提交文件</p>
+<p><code>git commit -am &#39;提交信息&#39;</code> 组合命令 添加到暂存区并提交</p>
+<h5 id="删除文件"><a href="#删除文件" class="headerlink" title="删除文件"></a>删除文件</h5><p><code>git rm file-name</code> 从工资区和暂存区删除文件</p>
+<p><code>git rm --cached file-name</code> 从暂存区删除文件,保留工作区的</p>
+<h5 id="回退版本"><a href="#回退版本" class="headerlink" title="回退版本"></a>回退版本</h5><p><code>git log</code> 查看记录</p>
+<p><code>git log --oneline</code>  查看精简记录</p>
+<p><code>git reset --soft</code>   保留工作区，暂存区内容</p>
+<p><code>git reset --hard</code>   不保留工作区，暂存区内容</p>
+<p><code>git reset --mixed</code>   保留工作区，不保留暂存区内容 (默认选择)</p>
+<p><code>git reset &lt;ID&gt;</code>  回退到<ID>版本</p>
+<p><code>git reset HEAD~</code>  回退到上个版本，HEAD表示当前版本， **HEAD~ **&#x3D;&#x3D; <strong>HEAD~1</strong> 回退一个版本</p>
+<p><code>git reflog</code> 查看操作记录 —— 回退错误也不怕 查到操作前<ID>,使用<code>git reset --hard &lt;ID&gt;</code>  回退</p>
+<h5 id="查看差异"><a href="#查看差异" class="headerlink" title="查看差异"></a>查看差异</h5><p><code>git diff</code> 查看工作区与暂存区差异</p>
+<p><code>git diff &lt;ID&gt; &lt;ID&gt;</code>  查看版本间差异</p>
+<h5 id="忽略文件"><a href="#忽略文件" class="headerlink" title="忽略文件"></a>忽略文件</h5><p>创建<code>.gitignore</code>文件</p>
+<p>写入要忽略文件</p>
+<pre class="language-txt line-numbers"><code class="language-txt">
+<span class="line">1.txt #忽略1.txt文件</span>
+<span class="line">*.log #忽略所有.log文件</span>
+<span class="line">!info.log#跟踪info.log</span>
+<span class="line">build/ #忽略build文件夹</span></code></pre>
+
+<h5 id="本地仓库关联远程仓库"><a href="#本地仓库关联远程仓库" class="headerlink" title="本地仓库关联远程仓库"></a>本地仓库关联远程仓库</h5><p><code>git remote add origin &lt;远程仓库&gt;</code>关联远程仓库</p>
+<p><code>git remote -v </code> 查看关联</p>
+<h5 id="推送-拉取远程分支"><a href="#推送-拉取远程分支" class="headerlink" title="推送&#x2F;拉取远程分支"></a>推送&#x2F;拉取远程分支</h5><p><code>git push -u origin master:main </code> 将本地master分支推送至远程main分支</p>
+<p><code>git pull origin main:master </code> 将远程main分支拉取至本地master分支</p>
+<h5 id="分支操作"><a href="#分支操作" class="headerlink" title="分支操作"></a>分支操作</h5><p><code>git branch </code> 查看分支列表</p>
+<p><code>git branch &lt;name&gt;  </code>  创建分支</p>
+<p><code>git checkout &lt;name&gt; </code> 切换分支 推荐使用<code> git switch &lt;name&gt;</code></p>
+<p><code>git merge &lt;name&gt;  </code>  合并分支 </p>
+<p><code>git branch -d &lt;name&gt;   </code>  删除已合并分支</p>
+<p><code>git branch -D &lt;name&gt;   </code>  删除未合并分支</p>
+<p><code>git rebase &lt;name&gt;  </code>  合并分支,将<name>分支合并到当前分支里，保留提交记录</p>
+
+</div>
+  <!-- Utterances 评论系统 -->
+  <div id="vcomments"></div>
+  <script src="https://utteranc.es/client.js"
+        repo="lijun2002pop/lijun2002pop.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+</main>
+    <footer>
+  <div class="footer-info">© 2026 李俊 (ifan) | Powered by <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> | Theme <a
+      target="_blank" rel="noopener" href="https://github.com/mizoreyo/hexo-theme-insnow">Insnow</a></div>
+  <div class="footer-info">
+    <a class="footer-i" href="wx:if2024253645"><i class="iconfont icon-wechat"></i></a>
+    <a class="footer-i" target="_blank" rel="noopener" href="https://github.com/lijun2002pop"><i class="iconfont icon-github-fill"></i></a>
+    <a class="footer-i" href="/atom.xml"><i class="iconfont icon-rss"></i></a>
+    <a class="footer-i" href="mailto:2024253645@qq.com"><i class="iconfont icon-mail"></i></a>
+  </div>
+</footer>
+
+  </div>
+</body>
+
+
+</html>

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+  <meta charset="utf-8">
+  
+  <title>
+    
+    python 元类
+    
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="me" href="https://mas.uniiem.com/@mizore" />
+  
+<script src="https://cdn.staticfile.org/prism/1.17.1/prism.min.js"></script>
+
+  
+<script src="https://cdn.staticfile.org/prism/1.17.1/plugins/autoloader/prism-autoloader.min.js"></script>
+
+  
+<link rel="stylesheet" href="/css/prism/material-light.css">
+
+  
+<link rel="stylesheet" href="/css/prism/material-dark.css">
+
+  
+<script src="https://cdn.staticfile.org/prism/1.17.1/plugins/line-numbers/prism-line-numbers.min.js"></script>
+
+  
+<link rel="stylesheet" href="https://cdn.staticfile.org/prism/1.17.1/plugins/line-numbers/prism-line-numbers.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&family=Noto+Sans+SC:wght@300&display=swap.css">
+
+  
+<link rel="stylesheet" href="/iconfont/iconfont.css">
+
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="ifan的博客" type="application/atom+xml">
+</head>
+<script>
+  function setIsNight(isNight) {
+    localStorage.setItem('isNight', isNight)
+  }
+
+  function getIsNight() {
+    return localStorage.getItem('isNight')
+  }
+
+  function switchTheme() {
+    let isNight = getIsNight()
+    if (isNight === 'false') {
+      document.documentElement.className = 'dark'
+      document.getElementsByClassName('theme-switcher')[0].textContent = '😴'
+      setIsNight('true')
+    } else {
+      document.documentElement.className = 'light'
+      document.getElementsByClassName('theme-switcher')[0].textContent = '😳'
+      setIsNight('false')
+    }
+  }
+
+  let isNight = getIsNight()
+  if (isNight == null) {
+    isNight = 'false'
+    setIsNight('false')
+  }
+  if (isNight === 'false') {
+    document.documentElement.className = 'light'
+  } else {
+    document.documentElement.className = 'dark'
+  }
+</script>
+
+<body>
+  <div class="show-area">
+    <header>
+  <ul class="nav">
+    <li class="nav-child">
+      <a href="/">首页</a>
+    </li>
+    <li class="nav-child">
+      <a href="/categories">分类</a>
+    </li>
+    <li class="nav-child">
+      <a href="/tags">标签</a>
+    </li>
+    <li class="nav-child">
+      <a href="/about">关于</a>
+    </li>
+    <li class="nav-child">
+      <a href="/collection">收藏</a>
+    </li>
+    <li class="nav-child">
+      <a href="/board">留言</a>
+    </li>
+  </ul>
+  <div class="theme-switcher" onclick="switchTheme()">😳</div>
+  <script>
+    if (isNight === 'false') {
+      document.getElementsByClassName('theme-switcher')[0].textContent = '😳'
+    } else {
+      document.getElementsByClassName('theme-switcher')[0].textContent = '😴'
+    }
+  </script>
+</header>
+    <main class="main-body">
+  <div class="toc-container">
+    <div class="toc-toggle">
+      <i id="toc-b-icon" class="iconfont icon-liebiao-01" onclick="toggleShow()"></i>
+    </div>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#python-%E5%85%83%E7%B1%BB"><span class="toc-number">1.</span> <span class="toc-text">python 元类</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%A0%B9%E6%8D%AE%E7%B1%BB%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1-obj-Car-%E9%9B%AA%E4%BD%9B%E5%85%B0"><span class="toc-number">1.0.0.1.</span> <span class="toc-text">根据类创建对象 obj &#x3D; Car(&#39;雪佛兰&#39;)</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%97%AE%EF%BC%9A%E5%AF%B9%E8%B1%A1%E6%98%AF%E7%B1%BB%E5%88%9B%E5%BB%BA%E7%9A%84%EF%BC%8C%E7%B1%BB%E6%98%AF%E8%B0%81%E5%88%9B%E5%BB%BA%E7%9A%84%EF%BC%9F"><span class="toc-number">1.0.0.2.</span> <span class="toc-text">问：对象是类创建的，类是谁创建的？</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#type%E5%88%9B%E5%BB%BA%E7%B1%BB"><span class="toc-number">1.0.1.</span> <span class="toc-text">type创建类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#metaclass-%E5%85%83%E7%B1%BB"><span class="toc-number">1.0.2.</span> <span class="toc-text">metaclass 元类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%83%E7%B1%BB%E5%88%9B%E5%BB%BA-%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.0.3.</span> <span class="toc-text">元类创建 单例模式</span></a></li></ol></li></ol></li></ol>
+  </div>
+  
+  <script>
+    var show = false
+    function toggleShow() {
+      if (show) {
+        document.getElementsByClassName('toc')[0].className = 'toc'
+        document.getElementById('toc-b-icon').className = 'iconfont icon-liebiao-01'
+      } else {
+        document.getElementsByClassName('toc')[0].className = 'toc show'
+        document.getElementById('toc-b-icon').className = 'iconfont icon-quxiao-01'
+      }
+      show = !show
+    }
+    document.getElementsByClassName('toc')[0].onclick = toggleShow
+  </script>
+  
+  <div class="article-header">
+    <h1 class="article-title">python 元类</h1>
+    <div class="article-details">
+      <div class="article-post-date"><span>Posted at </span> 2026-03-19</div>
+      <div class="article-tags">
+        
+        <a href="/tags/python">#python</a>
+        
+      </div>
+    </div>
+  </div>
+  <div class="article">
+  
+  <h2 id="python-元类"><a href="#python-元类" class="headerlink" title="python 元类"></a>python 元类</h2><pre class="language-python line-numbers"><code class="language-python">
+<span class="line"><span class="keyword">class</span> <span class="title class_">Car</span>(<span class="title class_ inherited__">object</span>):</span>
+<span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self,name</span>):</span>
+<span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;init&#x27;</span>)</span>
+<span class="line">        <span class="variable language_">self</span>.name=name</span>
+<span class="line">    <span class="keyword">def</span> <span class="title function_">__new__</span>(<span class="params">cls, *args, **kwargs</span>):</span>
+<span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;new&#x27;</span>)</span>
+<span class="line">        <span class="keyword">return</span> <span class="built_in">super</span>().__new__(cls)</span>
+<span class="line">    </span>
+<span class="line">obj = Car(<span class="string">&#x27;雪佛兰&#x27;</span>)</span>
+<span class="line"></span>
+<span class="line"><span class="comment"># 输出</span></span>
+<span class="line"><span class="comment"># new</span></span>
+<span class="line"><span class="comment"># init</span></span></code></pre>
+
+<h5 id="根据类创建对象-obj-Car-雪佛兰"><a href="#根据类创建对象-obj-Car-雪佛兰" class="headerlink" title="根据类创建对象 obj = Car(&#39;雪佛兰&#39;)"></a>根据类创建对象 <code>obj = Car(&#39;雪佛兰&#39;)</code></h5><ol>
+<li><p>执⾏类的 new ⽅法， 创建空对象 【构造⽅法】   {}</p>
+</li>
+<li><p>执⾏类的 init ⽅法，初始化对象 【初始化⽅法】 {name: “雪佛兰”}</p>
+</li>
+</ol>
+<h5 id="问：对象是类创建的，类是谁创建的？"><a href="#问：对象是类创建的，类是谁创建的？" class="headerlink" title="问：对象是类创建的，类是谁创建的？"></a>问：对象是类创建的，类是谁创建的？</h5><p>​	<strong>答：类是由type创建。</strong></p>
+<h4 id="type创建类"><a href="#type创建类" class="headerlink" title="type创建类"></a>type创建类</h4><pre class="language-python line-numbers"><code class="language-python">
+<span class="line"><span class="comment"># 传统⽅式创建类</span></span>
+<span class="line"><span class="keyword">class</span> <span class="title class_">Foo</span>(<span class="title class_ inherited__">object</span>):</span>
+<span class="line">    v1 = <span class="number">123</span></span>
+<span class="line"> 	<span class="keyword">def</span> <span class="title function_">func</span>(<span class="params">self</span>):</span>
+<span class="line"> 		<span class="keyword">return</span> <span class="number">666</span></span>
+<span class="line">    </span>
+<span class="line"><span class="comment"># ⾮传统⽅式创建类</span></span>
+<span class="line">Fa = <span class="built_in">type</span>(<span class="string">&quot;Foo&quot;</span>, (<span class="built_in">object</span>,),&#123;<span class="string">&quot;v1&quot;</span>: <span class="number">123</span>, <span class="string">&quot;func&quot;</span>:<span class="keyword">lambda</span> <span class="variable language_">self</span>:<span class="number">666</span>&#125;)</span>
+<span class="line"><span class="comment"># 1 创建类 </span></span>
+<span class="line"><span class="comment"># 参数        - 类名 - 继承类 - 成员</span></span>
+<span class="line"><span class="comment"># 2 根据类创建对象</span></span>
+<span class="line">obj = Fa()</span>
+<span class="line"><span class="comment"># 3 调⽤对象中的v1变量</span></span>
+<span class="line"><span class="built_in">print</span>(obj.v1)</span>
+<span class="line"><span class="comment"># 4 执⾏对象中的func⽅法</span></span>
+<span class="line">result = obj.func()</span></code></pre>
+
+
+
+<h4 id="metaclass-元类"><a href="#metaclass-元类" class="headerlink" title="metaclass 元类"></a>metaclass 元类</h4><pre class="language-python line-numbers"><code class="language-python">
+<span class="line"><span class="keyword">class</span> <span class="title class_">MyType</span>(<span class="title class_ inherited__">type</span>):</span>
+<span class="line">    <span class="keyword">pass</span></span>
+<span class="line"><span class="keyword">class</span> <span class="title class_">Foo</span>(<span class="built_in">object</span>, metaclass=MyType):</span>
+<span class="line">    <span class="keyword">pass</span></span>
+<span class="line"><span class="comment"># Foo类由MyType创建</span></span></code></pre>
+
+
+
+<pre class="language-python line-numbers"><code class="language-python">
+<span class="line"><span class="keyword">class</span> <span class="title class_">MyType</span>(<span class="title class_ inherited__">type</span>):</span>
+<span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, *args, **kwargs</span>):</span>
+<span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;init&#x27;</span>)</span>
+<span class="line">        <span class="built_in">super</span>().__init__(*args, **kwargs)</span>
+<span class="line"></span>
+<span class="line">    <span class="keyword">def</span> <span class="title function_">__new__</span>(<span class="params">cls, *args, **kwargs</span>):</span>
+<span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;new&#x27;</span>)</span>
+<span class="line">        <span class="keyword">return</span> <span class="built_in">super</span>().__new__(cls, *args, **kwargs)</span>
+<span class="line"></span>
+<span class="line">    <span class="keyword">def</span> <span class="title function_">__call__</span>(<span class="params">self, *args, **kwargs</span>):</span>
+<span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;call&#x27;</span>)</span>
+<span class="line">        <span class="comment"># 调⽤⾃⼰的那个类 __new__ ⽅法去创建对象</span></span>
+<span class="line">        empty_object = <span class="variable language_">self</span>.__new__(<span class="variable language_">self</span>)</span>
+<span class="line">        <span class="comment"># 调⽤你⾃⼰的 __init__ ⽅法取初始化</span></span>
+<span class="line">        <span class="variable language_">self</span>.__init__(empty_object, *args, **kwargs)</span>
+<span class="line">        <span class="keyword">return</span> empty_object</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">class</span> <span class="title class_">Foo</span>(<span class="built_in">object</span>, metaclass=MyType):</span>
+<span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, name</span>):</span>
+<span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;foo init&#x27;</span>)</span>
+<span class="line">        <span class="variable language_">self</span>.name = name</span>
+<span class="line"></span>
+<span class="line">    <span class="keyword">def</span> <span class="title function_">__new__</span>(<span class="params">cls, *args, **kwargs</span>):</span>
+<span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;foo new&#x27;</span>)</span>
+<span class="line">        <span class="keyword">return</span> <span class="built_in">super</span>().__new__(cls, *args, **kwargs)</span>
+<span class="line">obj = Foo(<span class="string">&#x27;ifan&#x27;</span>)</span>
+<span class="line"></span>
+<span class="line"><span class="comment">## class Foo(object, metaclass=MyType):</span></span>
+<span class="line"><span class="comment">#      ....</span></span>
+<span class="line"><span class="comment">#   执行到这一步 会调用 type的 call方法 在call方法中先调用 类的 new，在调用 类的 init</span></span>
+<span class="line"><span class="comment">#  class Foo():... =&gt; type call() =&gt;  mytype new()  =&gt; mytype init()</span></span>
+<span class="line"><span class="comment">#  输出 new init</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span class="comment">## obj = Foo(&#x27;ifan&#x27;)</span></span>
+<span class="line"><span class="comment">#  obj对象 由Foo类创建，Foo类（对象）由Mytype类创建</span></span>
+<span class="line"><span class="comment">#  调用 Foo(&#x27;ifan&#x27;)  =&gt; Mytype call() =&gt; Foo new() =&gt; Foo init()</span></span>
+<span class="line"><span class="comment">#  输出 call   foo new    foo init</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span class="comment">## obj() =&gt;  Foo call()</span></span></code></pre>
+
+
+
+<h4 id="元类创建-单例模式"><a href="#元类创建-单例模式" class="headerlink" title="元类创建 单例模式"></a>元类创建 单例模式</h4><pre class="language-python line-numbers"><code class="language-python">
+<span class="line"><span class="keyword">class</span> <span class="title class_">myType</span>(<span class="title class_ inherited__">type</span>):</span>
+<span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, *args, **kwargs</span>):</span>
+<span class="line">        <span class="built_in">super</span>().__init__( *args, **kwargs)</span>
+<span class="line">        <span class="variable language_">self</span>.instance=<span class="literal">None</span></span>
+<span class="line">        </span>
+<span class="line">    <span class="keyword">def</span> <span class="title function_">__new__</span>(<span class="params">cls, *args, **kwargs</span>):</span>
+<span class="line">        <span class="keyword">return</span> <span class="built_in">super</span>().__new__(cls, *args, **kwargs)</span>
+<span class="line">    </span>
+<span class="line">    <span class="keyword">def</span> <span class="title function_">__call__</span>(<span class="params">self, *args, **kwargs</span>):</span>
+<span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> <span class="variable language_">self</span>.instance:</span>
+<span class="line">            <span class="variable language_">self</span>.instance = <span class="variable language_">self</span>.__new__(<span class="variable language_">self</span>)</span>
+<span class="line">        <span class="variable language_">self</span>.__init__(<span class="variable language_">self</span>.instance, *args, **kwargs)</span>
+<span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.instance</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">class</span> <span class="title class_">per</span>(metaclass=myType):</span>
+<span class="line">    <span class="keyword">pass</span></span>
+<span class="line">a = per()</span>
+<span class="line">b = per()</span>
+<span class="line"><span class="built_in">print</span>(a,b)</span>
+<span class="line"></span></code></pre>
+
+
+</div>
+  <!-- Utterances 评论系统 -->
+  <div id="vcomments"></div>
+  <script src="https://utteranc.es/client.js"
+        repo="lijun2002pop/lijun2002pop.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+</main>
+    <footer>
+  <div class="footer-info">© 2026 李俊 (ifan) | Powered by <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> | Theme <a
+      target="_blank" rel="noopener" href="https://github.com/mizoreyo/hexo-theme-insnow">Insnow</a></div>
+  <div class="footer-info">
+    <a class="footer-i" href="wx:if2024253645"><i class="iconfont icon-wechat"></i></a>
+    <a class="footer-i" target="_blank" rel="noopener" href="https://github.com/lijun2002pop"><i class="iconfont icon-github-fill"></i></a>
+    <a class="footer-i" href="/atom.xml"><i class="iconfont icon-rss"></i></a>
+    <a class="footer-i" href="mailto:2024253645@qq.com"><i class="iconfont icon-mail"></i></a>
+  </div>
+</footer>
+
+  </div>
+</body>
+
+
+</html>

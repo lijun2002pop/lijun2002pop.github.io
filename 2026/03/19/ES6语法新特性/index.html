@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+  <meta charset="utf-8">
+  
+  <title>
+    
+    ES6语法新特性
+    
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="me" href="https://mas.uniiem.com/@mizore" />
+  
+<script src="https://cdn.staticfile.org/prism/1.17.1/prism.min.js"></script>
+
+  
+<script src="https://cdn.staticfile.org/prism/1.17.1/plugins/autoloader/prism-autoloader.min.js"></script>
+
+  
+<link rel="stylesheet" href="/css/prism/material-light.css">
+
+  
+<link rel="stylesheet" href="/css/prism/material-dark.css">
+
+  
+<script src="https://cdn.staticfile.org/prism/1.17.1/plugins/line-numbers/prism-line-numbers.min.js"></script>
+
+  
+<link rel="stylesheet" href="https://cdn.staticfile.org/prism/1.17.1/plugins/line-numbers/prism-line-numbers.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&family=Noto+Sans+SC:wght@300&display=swap.css">
+
+  
+<link rel="stylesheet" href="/iconfont/iconfont.css">
+
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="ifan的博客" type="application/atom+xml">
+</head>
+<script>
+  function setIsNight(isNight) {
+    localStorage.setItem('isNight', isNight)
+  }
+
+  function getIsNight() {
+    return localStorage.getItem('isNight')
+  }
+
+  function switchTheme() {
+    let isNight = getIsNight()
+    if (isNight === 'false') {
+      document.documentElement.className = 'dark'
+      document.getElementsByClassName('theme-switcher')[0].textContent = '😴'
+      setIsNight('true')
+    } else {
+      document.documentElement.className = 'light'
+      document.getElementsByClassName('theme-switcher')[0].textContent = '😳'
+      setIsNight('false')
+    }
+  }
+
+  let isNight = getIsNight()
+  if (isNight == null) {
+    isNight = 'false'
+    setIsNight('false')
+  }
+  if (isNight === 'false') {
+    document.documentElement.className = 'light'
+  } else {
+    document.documentElement.className = 'dark'
+  }
+</script>
+
+<body>
+  <div class="show-area">
+    <header>
+  <ul class="nav">
+    <li class="nav-child">
+      <a href="/">首页</a>
+    </li>
+    <li class="nav-child">
+      <a href="/categories">分类</a>
+    </li>
+    <li class="nav-child">
+      <a href="/tags">标签</a>
+    </li>
+    <li class="nav-child">
+      <a href="/about">关于</a>
+    </li>
+    <li class="nav-child">
+      <a href="/collection">收藏</a>
+    </li>
+    <li class="nav-child">
+      <a href="/board">留言</a>
+    </li>
+  </ul>
+  <div class="theme-switcher" onclick="switchTheme()">😳</div>
+  <script>
+    if (isNight === 'false') {
+      document.getElementsByClassName('theme-switcher')[0].textContent = '😳'
+    } else {
+      document.getElementsByClassName('theme-switcher')[0].textContent = '😴'
+    }
+  </script>
+</header>
+    <main class="main-body">
+  <div class="toc-container">
+    <div class="toc-toggle">
+      <i id="toc-b-icon" class="iconfont icon-liebiao-01" onclick="toggleShow()"></i>
+    </div>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#let-%E5%92%8C-const-%E5%91%BD%E4%BB%A4"><span class="toc-number">1.</span> <span class="toc-text">let 和 const 命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="toc-number">2.</span> <span class="toc-text">字符串的操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0"><span class="toc-number">3.</span> <span class="toc-text">箭头函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%89%A9%E5%B1%95"><span class="toc-number">4.</span> <span class="toc-text">对象的扩展</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E6%9E%84%E8%B5%8B%E5%80%BC"><span class="toc-number">5.</span> <span class="toc-text">解构赋值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Map-%E5%92%8C-Set"><span class="toc-number">6.</span> <span class="toc-text">Map 和 Set</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Set"><span class="toc-number">6.0.1.</span> <span class="toc-text">Set</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Weak-Set"><span class="toc-number">6.0.2.</span> <span class="toc-text">Weak Set</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Map"><span class="toc-number">6.0.3.</span> <span class="toc-text">Map</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Weak-map"><span class="toc-number">6.0.4.</span> <span class="toc-text">Weak map</span></a></li></ol></li></ol></li></ol>
+  </div>
+  
+  <script>
+    var show = false
+    function toggleShow() {
+      if (show) {
+        document.getElementsByClassName('toc')[0].className = 'toc'
+        document.getElementById('toc-b-icon').className = 'iconfont icon-liebiao-01'
+      } else {
+        document.getElementsByClassName('toc')[0].className = 'toc show'
+        document.getElementById('toc-b-icon').className = 'iconfont icon-quxiao-01'
+      }
+      show = !show
+    }
+    document.getElementsByClassName('toc')[0].onclick = toggleShow
+  </script>
+  
+  <div class="article-header">
+    <h1 class="article-title">ES6语法新特性</h1>
+    <div class="article-details">
+      <div class="article-post-date"><span>Posted at </span> 2026-03-19</div>
+      <div class="article-tags">
+        
+        <a href="/tags/js">#js</a>
+        
+      </div>
+    </div>
+  </div>
+  <div class="article">
+  
+  <h3 id="let-和-const-命令"><a href="#let-和-const-命令" class="headerlink" title="let 和 const 命令"></a>let 和 const 命令</h3><ul>
+<li><p><code>let </code>声明的变量在代码块内有效</p>
+</li>
+<li><p><code>let </code>不允许重复声明</p>
+</li>
+<li><p><code>let </code>不存在变量提升</p>
+<pre class="language-js line-numbers"><code class="language-js">
+<span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(a);        </span>
+<span class="line"><span class="keyword">var</span> a = <span class="number">1</span>; <span class="comment">// 输出undefined</span></span>
+<span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(b);        </span>
+<span class="line"><span class="keyword">let</span> b = <span class="number">1</span>; <span class="comment">// 报错Uncaught ReferenceError</span></span></code></pre>
+</li>
+<li><p><code>const</code>  声明只读的常量</p>
+</li>
+<li><p><code>const</code> 一旦声明变量，就必须立即初始化,不能留到以后赋值</p>
+<pre class="language-js line-numbers"><code class="language-js">
+<span class="line"><span class="keyword">const</span> person = &#123;<span class="attr">name</span>:<span class="string">&#x27;mjj&#x27;</span>&#125;;<span class="comment">// 可以修改变量成员</span></span>
+<span class="line">person.<span class="property">name</span> = <span class="string">&#x27;alex&#x27;</span>;</span>
+<span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(person); <span class="comment">// &#123;name:&#x27;alex&#x27;&#125;</span></span></code></pre>
+
+<p><strong>在默认情况下用<code>const</code>,而只有你在知道变量值需要被修改的情况下使用<code>let</code></strong></p>
+</li>
+</ul>
+<h3 id="字符串的操作"><a href="#字符串的操作" class="headerlink" title="字符串的操作"></a>字符串的操作</h3><p>使用<code>$&#123;变量名&#125;</code>来替换字符串</p>
+<pre class="language-plaintext line-numbers"><code class="language-plaintext">
+<span class="line">var name = &#x27;mjj&#x27;;</span>
+<span class="line">var htmlTel = `&lt;p&gt;name:$&#123;name&#125;&lt;/p&gt;`</span></code></pre>
+
+<h3 id="箭头函数"><a href="#箭头函数" class="headerlink" title="箭头函数"></a>箭头函数</h3><ul>
+<li><p>使用 () &#x3D;&gt; {} 代替 function (){}</p>
+</li>
+<li><p>箭头函数没有this的指向，箭头函数内部的this值只能通过查找作用域链来确定</p>
+</li>
+<li><p>如果箭头函数被一个非箭头函数所包括，那么this的值与该函数的所属对象相等，否则 则是全局的window对象</p>
+</li>
+<li><p>箭头函数中没有arguments对象 </p>
+</li>
+<li><p>箭头函数不能使用new关键字来实例化对象</p>
+</li>
+</ul>
+<pre class="language-js line-numbers"><code class="language-js">
+<span class="line"><span class="keyword">let</span> add = <span class="keyword">function</span> (<span class="params">a,b</span>)&#123;<span class="keyword">return</span> a+b&#125;; </span>
+<span class="line"><span class="keyword">let</span> <span class="title function_">add2</span> = (<span class="params">a,b</span>) =&gt; &#123;a+b&#125;; <span class="comment">// 箭头函数</span></span>
+<span class="line"></span>
+<span class="line"><span class="keyword">let</span> <span class="title function_">add3</span> = (<span class="params">a,b=<span class="number">20</span></span>) =&gt; &#123;a+b&#125; <span class="comment">//带参数默认值的函数</span></span>
+<span class="line"><span class="keyword">let</span> <span class="title function_">add4</span> = (<span class="params">a,b=add(<span class="number">1</span>,<span class="number">2</span>)</span>) =&gt; &#123;a+b&#125; <span class="comment">//参数默认值可以是函数</span></span>
+<span class="line"></span>
+<span class="line"><span class="keyword">let</span> <span class="title function_">checkArgs</span> = (<span class="params">...args</span>) =&gt; &#123;<span class="variable language_">console</span>.<span class="title function_">log</span>(args);&#125; <span class="comment">//...args 剩余参数</span></span>
+<span class="line"><span class="title function_">checkArgs</span>(<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>);</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">var</span> arr = [<span class="number">10</span>, <span class="number">30</span>, <span class="number">20</span>];</span>
+<span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(...arr); <span class="comment">//扩展运算符</span></span></code></pre>
+
+<h3 id="对象的扩展"><a href="#对象的扩展" class="headerlink" title="对象的扩展"></a>对象的扩展</h3><p>属性，方法的简洁表示法</p>
+<pre class="language-js line-numbers"><code class="language-js">
+<span class="line"><span class="keyword">const</span> name = <span class="string">&#x27;张三&#x27;</span>;</span>
+<span class="line"><span class="keyword">const</span> age = <span class="number">19</span>;</span>
+<span class="line"><span class="comment">//es5</span></span>
+<span class="line"><span class="keyword">var</span> person = &#123;</span>
+<span class="line">    <span class="attr">name</span>:name,<span class="attr">age</span>:age,<span class="attr">sayHi</span>:<span class="keyword">function</span>(<span class="params"></span>)&#123;<span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;hi&#x27;</span>)&#125;</span>
+<span class="line">&#125;</span>
+<span class="line"><span class="comment">//es6</span></span>
+<span class="line"><span class="keyword">let</span> person = &#123;</span>
+<span class="line">    name,age,<span class="title function_">sayHi</span>(<span class="params"></span>)&#123;<span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;hi&#x27;</span>)&#125;</span>
+<span class="line">&#125;</span></code></pre>
+
+<p>   属性名表达式</p>
+<pre class="language-js line-numbers"><code class="language-js">
+<span class="line">obj=&#123;&#125;;</span>
+<span class="line">obj[<span class="string">&#x27;a&#x27;</span> + <span class="string">&#x27;bc&#x27;</span>] = <span class="number">123</span>;</span>
+<span class="line">obj[<span class="string">&#x27;a&#x27;</span>+<span class="string">&#x27;v&#x27;</span>] = <span class="function">(<span class="params">aa</span>)=&gt;</span> aa; <span class="comment">//输出 &#123;abc: 123, av: ƒ&#125;</span></span>
+<span class="line"></span>
+<span class="line"><span class="comment">// assign() 合并对象</span></span>
+<span class="line"><span class="keyword">let</span> obj1 = &#123;<span class="attr">a</span>: <span class="number">1</span>&#125;;</span>
+<span class="line"><span class="keyword">let</span> obj2 = &#123;<span class="attr">b</span>: <span class="number">2</span>&#125;;</span>
+<span class="line"><span class="keyword">let</span> obj3 = <span class="title class_">Object</span>.<span class="title function_">assign</span>(obj1, obj2); <span class="comment">//输出 &#123;a: 1,b: 2&#125;</span></span></code></pre>
+
+
+
+<h3 id="解构赋值"><a href="#解构赋值" class="headerlink" title="解构赋值"></a>解构赋值</h3><ol>
+<li>对象结构</li>
+</ol>
+<pre class="language-js line-numbers"><code class="language-js">
+<span class="line"><span class="keyword">let</span> node = &#123;<span class="attr">type</span>:<span class="string">&#x27;identifier&#x27;</span>,<span class="attr">name</span>:<span class="string">&#x27;foo&#x27;</span>&#125;</span>
+<span class="line"><span class="keyword">let</span> &#123;type,name&#125; = node;</span>
+<span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(type,name); <span class="comment">// 输出 identifier foo</span></span>
+<span class="line"></span>
+<span class="line"><span class="keyword">let</span> &#123;a,b = <span class="number">10</span>&#125; = &#123;<span class="attr">a</span>:<span class="number">20</span>&#125;; <span class="comment">// 默认值</span></span>
+<span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(a,b); <span class="comment">// 输出 20 10</span></span></code></pre>
+
+<ol start="2">
+<li>数组</li>
+</ol>
+<pre class="language-js line-numbers"><code class="language-js">
+<span class="line"><span class="keyword">let</span> arr = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>];</span>
+<span class="line"><span class="keyword">let</span> [a,b,c] = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>];</span>
+<span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(a,b,v); <span class="comment">// 输出 1 2 3</span></span></code></pre>
+
+<p><strong>Symbol</strong></p>
+<blockquote>
+<p>Symbol类型，它表示独一无二的值</p>
+<p>最大的用途 是用来定义对象的私有成员</p>
+</blockquote>
+<h3 id="Map-和-Set"><a href="#Map-和-Set" class="headerlink" title="Map 和 Set"></a>Map 和 Set</h3><h5 id="Set"><a href="#Set" class="headerlink" title="Set"></a>Set</h5><p>Set类型，一种无重复值的有序列表</p>
+<pre class="language-js line-numbers"><code class="language-js">
+<span class="line"><span class="keyword">let</span> set = <span class="keyword">new</span> <span class="title class_">Set</span>(); <span class="comment">//创建set对象</span></span>
+<span class="line">set.<span class="title function_">add</span>(<span class="number">5</span>);          <span class="comment">// 添加元素</span></span>
+<span class="line">set.<span class="title function_">delete</span>(<span class="number">5</span>);       <span class="comment">//移除元素</span></span>
+<span class="line">set.<span class="title function_">clear</span>();         <span class="comment">//清空</span></span>
+<span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(set.<span class="property">size</span>);<span class="comment">//size属性来访问该集合的长度</span></span>
+<span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(set.<span class="title function_">has</span>(<span class="number">5</span>));<span class="comment">//has()方法来校验某个值是否存在于Set中</span></span>
+<span class="line"><span class="comment">//forEach()方法</span></span>
+<span class="line">set.<span class="title function_">forEach</span>(<span class="keyword">function</span>(<span class="params">val,key,ownerSet</span>) &#123;</span>
+<span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(key,val); </span>
+<span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(ownerSet);  </span>
+<span class="line">    &#125;) </span>
+<span class="line"><span class="comment">//转换为数组</span></span>
+<span class="line"><span class="keyword">let</span> set = <span class="keyword">new</span> <span class="title class_">Set</span>([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]);</span>
+<span class="line"><span class="keyword">let</span> arr = [...set];</span>
+<span class="line"></span>
+<span class="line"><span class="comment">//set中的对象引用无法被释放</span></span></code></pre>
+
+<h5 id="Weak-Set"><a href="#Weak-Set" class="headerlink" title="Weak Set"></a>Weak Set</h5><blockquote>
+<p>解决set中的对象引用无法被释放</p>
+<p><code>WeakSet</code> 的成员只能是对象，而不能是其他类型的值。</p>
+<p> size、<code>forEach</code>、clear 方法都不存在</p>
+</blockquote>
+<pre class="language-js line-numbers"><code class="language-js">
+<span class="line"><span class="keyword">const</span> ws = <span class="keyword">new</span> <span class="title class_">WeakSet</span>();</span>
+<span class="line"><span class="keyword">const</span> a = [[<span class="number">1</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">4</span>]];</span>
+<span class="line"><span class="keyword">const</span> ws = <span class="keyword">new</span> <span class="title class_">WeakSet</span>(a); <span class="comment">// WeakSet &#123;[1, 2], [3, 4]&#125;</span></span></code></pre>
+
+<h5 id="Map"><a href="#Map" class="headerlink" title="Map"></a>Map</h5><p>  Map类型是键值对的有序列表，而键和值都可以是任意类型</p>
+<pre class="language-js line-numbers"><code class="language-js">
+<span class="line"><span class="keyword">let</span> map = <span class="keyword">new</span> <span class="title class_">Map</span>();</span>
+<span class="line">map.<span class="title function_">set</span>(<span class="string">&#x27;name&#x27;</span>,<span class="string">&#x27;张三&#x27;</span>);<span class="comment">// set()方法 相当于设置值</span></span>
+<span class="line">map.<span class="title function_">delete</span>(<span class="string">&#x27;name&#x27;</span>);</span>
+<span class="line">map.<span class="title function_">has</span>(<span class="string">&#x27;name&#x27;</span>);</span>
+<span class="line">map.<span class="property">size</span>;</span>
+<span class="line">map.<span class="title function_">clear</span>();</span>
+<span class="line">map.<span class="title function_">forEach</span>(<span class="keyword">function</span> (<span class="params">val,key,ownerMap</span>) &#123;</span>
+<span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(key,val);</span>
+<span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(ownerMap); </span>
+<span class="line">    &#125;)</span></code></pre>
+
+<h5 id="Weak-map"><a href="#Weak-map" class="headerlink" title="Weak map"></a>Weak map</h5><blockquote>
+<p><code>WeakMap</code>只接受对象作为键名（<code>null</code>除外），不接受其他类型的值作为键名</p>
+</blockquote>
+<pre class="language-js line-numbers"><code class="language-js">
+<span class="line"><span class="keyword">const</span> wm1 = <span class="keyword">new</span> <span class="title class_">WeakMap</span>();</span>
+<span class="line"><span class="keyword">const</span> key = &#123;<span class="attr">foo</span>: <span class="number">1</span>&#125;;</span>
+<span class="line">wm1.<span class="title function_">set</span>(key, <span class="number">2</span>);</span>
+<span class="line">wm1.<span class="title function_">get</span>(key);</span>
+<span class="line"><span class="comment">// size、forEach、clear 方法都不存在</span></span></code></pre>
+
+
+</div>
+  <!-- Utterances 评论系统 -->
+  <div id="vcomments"></div>
+  <script src="https://utteranc.es/client.js"
+        repo="lijun2002pop/lijun2002pop.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+</main>
+    <footer>
+  <div class="footer-info">© 2026 李俊 (ifan) | Powered by <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> | Theme <a
+      target="_blank" rel="noopener" href="https://github.com/mizoreyo/hexo-theme-insnow">Insnow</a></div>
+  <div class="footer-info">
+    <a class="footer-i" href="wx:if2024253645"><i class="iconfont icon-wechat"></i></a>
+    <a class="footer-i" target="_blank" rel="noopener" href="https://github.com/lijun2002pop"><i class="iconfont icon-github-fill"></i></a>
+    <a class="footer-i" href="/atom.xml"><i class="iconfont icon-rss"></i></a>
+    <a class="footer-i" href="mailto:2024253645@qq.com"><i class="iconfont icon-mail"></i></a>
+  </div>
+</footer>
+
+  </div>
+</body>
+
+
+</html>

@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+  <meta charset="utf-8">
+  
+  <title>
+    
+    协程&amp;异步编程
+    
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="me" href="https://mas.uniiem.com/@mizore" />
+  
+<script src="https://cdn.staticfile.org/prism/1.17.1/prism.min.js"></script>
+
+  
+<script src="https://cdn.staticfile.org/prism/1.17.1/plugins/autoloader/prism-autoloader.min.js"></script>
+
+  
+<link rel="stylesheet" href="/css/prism/material-light.css">
+
+  
+<link rel="stylesheet" href="/css/prism/material-dark.css">
+
+  
+<script src="https://cdn.staticfile.org/prism/1.17.1/plugins/line-numbers/prism-line-numbers.min.js"></script>
+
+  
+<link rel="stylesheet" href="https://cdn.staticfile.org/prism/1.17.1/plugins/line-numbers/prism-line-numbers.min.css">
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&family=Noto+Sans+SC:wght@300&display=swap.css">
+
+  
+<link rel="stylesheet" href="/iconfont/iconfont.css">
+
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="ifan的博客" type="application/atom+xml">
+</head>
+<script>
+  function setIsNight(isNight) {
+    localStorage.setItem('isNight', isNight)
+  }
+
+  function getIsNight() {
+    return localStorage.getItem('isNight')
+  }
+
+  function switchTheme() {
+    let isNight = getIsNight()
+    if (isNight === 'false') {
+      document.documentElement.className = 'dark'
+      document.getElementsByClassName('theme-switcher')[0].textContent = '😴'
+      setIsNight('true')
+    } else {
+      document.documentElement.className = 'light'
+      document.getElementsByClassName('theme-switcher')[0].textContent = '😳'
+      setIsNight('false')
+    }
+  }
+
+  let isNight = getIsNight()
+  if (isNight == null) {
+    isNight = 'false'
+    setIsNight('false')
+  }
+  if (isNight === 'false') {
+    document.documentElement.className = 'light'
+  } else {
+    document.documentElement.className = 'dark'
+  }
+</script>
+
+<body>
+  <div class="show-area">
+    <header>
+  <ul class="nav">
+    <li class="nav-child">
+      <a href="/">首页</a>
+    </li>
+    <li class="nav-child">
+      <a href="/categories">分类</a>
+    </li>
+    <li class="nav-child">
+      <a href="/tags">标签</a>
+    </li>
+    <li class="nav-child">
+      <a href="/about">关于</a>
+    </li>
+    <li class="nav-child">
+      <a href="/collection">收藏</a>
+    </li>
+    <li class="nav-child">
+      <a href="/board">留言</a>
+    </li>
+  </ul>
+  <div class="theme-switcher" onclick="switchTheme()">😳</div>
+  <script>
+    if (isNight === 'false') {
+      document.getElementsByClassName('theme-switcher')[0].textContent = '😳'
+    } else {
+      document.getElementsByClassName('theme-switcher')[0].textContent = '😴'
+    }
+  </script>
+</header>
+    <main class="main-body">
+  <div class="toc-container">
+    <div class="toc-toggle">
+      <i id="toc-b-icon" class="iconfont icon-liebiao-01" onclick="toggleShow()"></i>
+    </div>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#async"><span class="toc-number">1.</span> <span class="toc-text">async</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#awit"><span class="toc-number">2.</span> <span class="toc-text">awit</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Task%E5%AF%B9%E8%B1%A1"><span class="toc-number">3.</span> <span class="toc-text">Task对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#asyncio-Future%E5%AF%B9%E8%B1%A1"><span class="toc-number">4.</span> <span class="toc-text">asyncio.Future对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#futures-Future%E5%AF%B9%E8%B1%A1"><span class="toc-number">5.</span> <span class="toc-text">futures.Future对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%82%E6%AD%A5%E8%BF%AD%E4%BB%A3%E5%99%A8"><span class="toc-number">6.</span> <span class="toc-text">异步迭代器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%82%E6%AD%A5%E4%B8%8A%E4%B8%8B%E6%96%87%E7%AE%A1%E7%90%86%E5%99%A8"><span class="toc-number">7.</span> <span class="toc-text">异步上下文管理器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#uvloop"><span class="toc-number">8.</span> <span class="toc-text">uvloop</span></a></li></ol>
+  </div>
+  
+  <script>
+    var show = false
+    function toggleShow() {
+      if (show) {
+        document.getElementsByClassName('toc')[0].className = 'toc'
+        document.getElementById('toc-b-icon').className = 'iconfont icon-liebiao-01'
+      } else {
+        document.getElementsByClassName('toc')[0].className = 'toc show'
+        document.getElementById('toc-b-icon').className = 'iconfont icon-quxiao-01'
+      }
+      show = !show
+    }
+    document.getElementsByClassName('toc')[0].onclick = toggleShow
+  </script>
+  
+  <div class="article-header">
+    <h1 class="article-title">协程&异步编程</h1>
+    <div class="article-details">
+      <div class="article-post-date"><span>Posted at </span> 2026-03-19</div>
+      <div class="article-tags">
+        
+        <a href="/tags/python">#python</a>
+        
+      </div>
+    </div>
+  </div>
+  <div class="article">
+  
+  <blockquote>
+<p>协程，也可以被称为微线程，是一种用户态内的上下文切换技术。简而言之，其实就是通过一个线程实现代码块相互切换执行</p>
+<p>协程一般应用在有IO操作的程序中，因为协程可以利用IO等待的时间去执行一些其他的代码，从而提升代码执行效率。</p>
+</blockquote>
+<h3 id="async"><a href="#async" class="headerlink" title="async"></a>async</h3><p><strong>事件循环</strong></p>
+<p><em>事件循环</em>，可以理解为while循环，在周期性的执行一些任务，在任务列表为空时终止循环。</p>
+<pre class="language-python line-numbers"><code class="language-python">
+<span class="line"><span class="comment"># 伪代码</span></span>
+<span class="line"></span>
+<span class="line">任务列表 = [ 任务<span class="number">1</span>, 任务<span class="number">2</span>, 任务<span class="number">3</span>,... ]</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span>
+<span class="line">    可执行的任务列表，已完成的任务列表 = 去任务列表中检查所有的任务，将<span class="string">&#x27;可执行&#x27;</span>和<span class="string">&#x27;已完成&#x27;</span>的任务返回</span>
+<span class="line">    </span>
+<span class="line">    <span class="keyword">for</span> 就绪任务 <span class="keyword">in</span> 已准备就绪的任务列表:</span>
+<span class="line">        执行已就绪的任务</span>
+<span class="line">        </span>
+<span class="line">    <span class="keyword">for</span> 已完成的任务 <span class="keyword">in</span> 已完成的任务列表:</span>
+<span class="line">        在任务列表中移除 已完成的任务</span>
+<span class="line"></span>
+<span class="line">	如果 任务列表 中的任务都已完成，则终止循环</span></code></pre>
+
+
+
+<blockquote>
+<p>协程函数，定义形式为 <code>async def </code>的函数。</p>
+<p>协程对象，调用 <em>协程函数</em> 所返回的对象。</p>
+</blockquote>
+<p>执行协程函数，需要 <em>事件循环</em> 和 <em>协程对象</em> 配合实现。</p>
+<pre class="language-python line-numbers"><code class="language-python">
+<span class="line"><span class="keyword">import</span> asyncio</span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span class="comment"># 定义一个协程函数</span></span>
+<span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">func</span>():</span>
+<span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;我是tasks&#x27;</span>)</span>
+<span class="line">    </span>
+<span class="line"><span class="comment"># 调用协程函数，返回一个协程对象  注意：函数内部代码不会执行</span></span>
+<span class="line">result = func()</span>
+<span class="line"></span>
+<span class="line"><span class="comment">#方式1</span></span>
+<span class="line"><span class="comment"># loop = asyncio.get_event_loop()   # 创建一个事件循环</span></span>
+<span class="line"><span class="comment"># loop.run_until_complete(result)   # 将协程当做任务提交到事件循环的任务列表中，协程执行完成之后终止。</span></span>
+<span class="line"></span>
+<span class="line"><span class="comment"># 方式2</span></span>
+<span class="line">asyncio.run(result)   <span class="comment"># asyncio.run 函数在 Python 3.7 中加入 asyncio 模块</span></span></code></pre>
+
+
+
+<h3 id="awit"><a href="#awit" class="headerlink" title="awit"></a>awit</h3><blockquote>
+<p>await是一个只能在协程函数中使用的关键字，用于遇到IO操作时挂起 当前协程（任务），当前协程（任务）挂起过程中 事件循环可以去执行其他的协程（任务），当前协程IO处理完成时，可以再次切换回来执行await之后的代码</p>
+</blockquote>
+<p>示例</p>
+<pre class="language-python line-numbers"><code class="language-python">
+<span class="line"><span class="keyword">import</span> asyncio</span>
+<span class="line"></span>
+<span class="line"><span class="comment"># await后面可以加 协程对象 task对象 future对象</span></span>
+<span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">download</span>():</span>
+<span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;start&#x27;</span>)</span>
+<span class="line">    <span class="keyword">await</span> asyncio.sleep(<span class="number">2</span>)</span>
+<span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;end&#x27;</span>)</span>
+<span class="line">    <span class="keyword">return</span> <span class="string">&#x27;ok&#x27;</span></span>
+<span class="line"></span>
+<span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">func</span>():</span>
+<span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;我是tasks&#x27;</span>)</span>
+<span class="line">    res = <span class="keyword">await</span> download()</span>
+<span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;结束&#x27;</span>,res)</span>
+<span class="line">    res2 = <span class="keyword">await</span> download()</span>
+<span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;结束&#x27;</span>, res2)</span>
+<span class="line"></span>
+<span class="line">asyncio.run(func())</span></code></pre>
+
+<p>上述的示例只创建了一个任务,所以无法切换到其他任务</p>
+<p>在程序想要创建多个任务对象，需要使用Task对象来实现。</p>
+<h3 id="Task对象"><a href="#Task对象" class="headerlink" title="Task对象"></a>Task对象</h3><p>Tasks用于并发调度协程，通过<code>asyncio.create_task(协程对象)</code>的方式创建Task对象，可以让协程加入事件循环中等待被调度执行。</p>
+<p><strong>task 添加任务放到事件循环</strong></p>
+<p>示例1</p>
+<pre class="language-python line-numbers"><code class="language-python">
+<span class="line"><span class="keyword">import</span> asyncio</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">download</span>():</span>
+<span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;start&#x27;</span>)</span>
+<span class="line">    <span class="keyword">await</span> asyncio.sleep(<span class="number">2</span>)</span>
+<span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;end&#x27;</span>)</span>
+<span class="line">    <span class="keyword">return</span> <span class="string">&#x27;ok&#x27;</span></span>
+<span class="line"></span>
+<span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">func</span>():</span>
+<span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;main&#x27;</span>)</span>
+<span class="line">    <span class="comment"># 创建协程，将协程封装到一个Task对象中并立即添加到事件循环的任务列表中，等待事件循环去执行（默认是就绪状态）。</span></span>
+<span class="line">    task1 = asyncio.create_task(download())</span>
+<span class="line">    task2 = asyncio.create_task(download())</span>
+<span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;end&#x27;</span>)</span>
+<span class="line"></span>
+<span class="line">    ret1 = <span class="keyword">await</span> task1</span>
+<span class="line">    ret2 = <span class="keyword">await</span> task2</span>
+<span class="line">    <span class="built_in">print</span>(ret1,ret2)</span>
+<span class="line"></span>
+<span class="line">asyncio.run(func())</span></code></pre>
+
+<p>示例2</p>
+<pre class="language-python line-numbers"><code class="language-python">
+<span class="line"><span class="keyword">import</span> asyncio</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">download</span>():</span>
+<span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;start&#x27;</span>)</span>
+<span class="line">    <span class="keyword">await</span> asyncio.sleep(<span class="number">2</span>)</span>
+<span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;end&#x27;</span>)</span>
+<span class="line">    <span class="keyword">return</span> <span class="string">&#x27;ok&#x27;</span></span>
+<span class="line">    </span>
+<span class="line"><span class="comment"># 常规写法</span></span>
+<span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">func2</span>():</span>
+<span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;main&#x27;</span>)</span>
+<span class="line">    task_list = [</span>
+<span class="line">        asyncio.create_task(download(),name=<span class="string">&#x27;t1&#x27;</span>),</span>
+<span class="line">        asyncio.create_task(download(),name=<span class="string">&#x27;t2&#x27;</span>),</span>
+<span class="line">    ]</span>
+<span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;end&#x27;</span>)</span>
+<span class="line">    done,_ = <span class="keyword">await</span> asyncio.wait(task_list)</span>
+<span class="line">    <span class="built_in">print</span>(done)</span>
+<span class="line"></span>
+<span class="line">asyncio.run(func2())</span></code></pre>
+
+<p>注意：<code>asyncio.wait</code> 源码内部会对列表中的每个协程执行ensure_future从而封装为Task对象，所以在和wait配合使用时task_list的值为<code>[func(),func()]</code> 也是可以的。</p>
+<p>示例3</p>
+<pre class="language-python line-numbers"><code class="language-python">
+<span class="line"><span class="keyword">import</span> asyncio</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">download</span>():</span>
+<span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;start&#x27;</span>)</span>
+<span class="line">    <span class="keyword">await</span> asyncio.sleep(<span class="number">2</span>)</span>
+<span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;end&#x27;</span>)</span>
+<span class="line">    <span class="keyword">return</span> <span class="string">&#x27;ok&#x27;</span></span>
+<span class="line"></span>
+<span class="line"><span class="comment"># 放到外部执行</span></span>
+<span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span>
+<span class="line">    task_list = [</span>
+<span class="line">            download(),</span>
+<span class="line">            download()</span>
+<span class="line">        ]</span>
+<span class="line">    <span class="comment"># 错误：task_list = [ asyncio.create_task(download()), asyncio.create_task(download()) ]  </span></span>
+<span class="line">    <span class="comment"># 此处不能直接 asyncio.create_task，因为将Task立即加入到事件循环的任务列表，</span></span>
+<span class="line">    <span class="comment"># 但此时事件循环还未创建，所以会报错。</span></span>
+<span class="line">    </span>
+<span class="line">    done,_ = asyncio.run(asyncio.wait(task_list))</span>
+<span class="line">    <span class="built_in">print</span>(done)</span>
+<span class="line">    <span class="comment"># 使用asyncio.wait将列表封装为一个协程，并调用asyncio.run实现执行两个协程</span></span>
+<span class="line">    <span class="comment"># asyncio.wait内部会对列表中的每个协程执行ensure_future，封装为Task对象。</span></span>
+<span class="line"></span>
+<span class="line">main()</span></code></pre>
+
+
+
+<h3 id="asyncio-Future对象"><a href="#asyncio-Future对象" class="headerlink" title="asyncio.Future对象"></a>asyncio.Future对象</h3><p>task 继承 funture ,task对象内部await结果的处理基于funture对象来的</p>
+<pre class="language-python line-numbers"><code class="language-python">
+<span class="line"><span class="keyword">import</span> asyncio</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">main</span>():</span>
+<span class="line">    <span class="comment"># 获取当前事件循环</span></span>
+<span class="line">    loop = asyncio.get_running_loop()</span>
+<span class="line">    <span class="comment"># # 创建一个任务（Future对象），这个任务什么都不干。</span></span>
+<span class="line">    fut = loop.create_future()</span>
+<span class="line">    <span class="comment"># 等待任务最终结果（Future对象），没有结果则会一直等下去。</span></span>
+<span class="line">    <span class="keyword">await</span> fut</span>
+<span class="line"></span>
+<span class="line">asyncio.run(main())</span></code></pre>
+
+
+
+<h3 id="futures-Future对象"><a href="#futures-Future对象" class="headerlink" title="futures.Future对象"></a>futures.Future对象</h3><p>在Python的<code>concurrent.futures</code>模块中也有一个Future对象，这个对象是基于线程池和进程池实现异步操作时使用的对象。</p>
+<pre class="language-python line-numbers"><code class="language-python">
+<span class="line"><span class="keyword">import</span> asyncio</span>
+<span class="line"><span class="keyword">import</span> time</span>
+<span class="line"><span class="keyword">from</span> concurrent.futures.thread <span class="keyword">import</span> ThreadPoolExecutor</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">def</span> <span class="title function_">func</span>():</span>
+<span class="line">    time.sleep(<span class="number">1</span>)</span>
+<span class="line">    <span class="keyword">return</span> <span class="number">123</span></span>
+<span class="line"></span>
+<span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span>
+<span class="line">    pool = ThreadPoolExecutor(max_workers=<span class="number">5</span>)</span>
+<span class="line">    fut = pool.submit(func)</span>
+<span class="line">    <span class="built_in">print</span>(fut)</span>
+<span class="line"></span>
+<span class="line">main()</span></code></pre>
+
+<p>两个Future对象是不同的，他们是为不同的应用场景而设计，例如：<code>concurrent.futures.Future</code>不支持await语法 等。</p>
+<p>在Python提供了一个将<code>futures.Future</code> 对象包装成<code>asyncio.Future</code>对象的函数 </p>
+<p><strong>两个Future混合使用</strong></p>
+<pre class="language-python line-numbers"><code class="language-python">
+<span class="line"><span class="keyword">import</span> asyncio</span>
+<span class="line"><span class="keyword">import</span> time</span>
+<span class="line"><span class="keyword">from</span> concurrent.futures.thread <span class="keyword">import</span> ThreadPoolExecutor</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">def</span> <span class="title function_">func</span>():</span>
+<span class="line">    time.sleep(<span class="number">1</span>)</span>
+<span class="line">    <span class="keyword">return</span> <span class="number">123</span></span>
+<span class="line"></span>
+<span class="line"><span class="comment"># 将线程池的future对象转换为async的future对象</span></span>
+<span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">main2</span>():</span>
+<span class="line">    loop = asyncio.get_running_loop()</span>
+<span class="line">    <span class="comment">#获取当前的事件循环</span></span>
+<span class="line"></span>
+<span class="line">    <span class="comment">#1.为 None 默认生成 ThreadPoolExecutor,任务加入线程池里运行,返回future</span></span>
+<span class="line">    fut = loop.run_in_executor(<span class="literal">None</span>,func)</span>
+<span class="line">    result = <span class="keyword">await</span> fut</span>
+<span class="line">    <span class="built_in">print</span>(result)</span>
+<span class="line">    <span class="comment"># 2.</span></span>
+<span class="line">    <span class="comment"># with ThreadPoolExecutor() as pool:</span></span>
+<span class="line">    <span class="comment">#     fut = await loop.run_in_executor(pool,func)</span></span>
+<span class="line">    <span class="comment">#     print(fut)</span></span>
+<span class="line"></span>
+<span class="line">asyncio.run(main2())</span></code></pre>
+
+<p><strong>应用场景</strong></p>
+<pre class="language-python line-numbers"><code class="language-python">
+<span class="line"><span class="comment"># 异步与非异步模块的案例</span></span>
+<span class="line"><span class="keyword">import</span> asyncio</span>
+<span class="line"><span class="keyword">import</span> requests</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">download</span>(<span class="params">url</span>):</span>
+<span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;开始下载&#x27;</span>,url)</span>
+<span class="line">    loop = asyncio.get_event_loop()</span>
+<span class="line">    <span class="comment">#requests模块不支持异步操作，所以通过线程池配合</span></span>
+<span class="line">    fut = loop.run_in_executor(<span class="literal">None</span>,requests.get,url)</span>
+<span class="line">    response = <span class="keyword">await</span> fut</span>
+<span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;下载完成&#x27;</span>)</span>
+<span class="line">    file_name = url.rsplit(<span class="string">&#x27;/&#x27;</span>)[-<span class="number">1</span>]+<span class="string">&#x27;.jpg&#x27;</span></span>
+<span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(file_name,<span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> f:</span>
+<span class="line">        f.write(response.content)</span>
+<span class="line"><span class="keyword">def</span> <span class="title function_">main3</span>():</span>
+<span class="line">    url_list = [</span>
+<span class="line">        <span class="string">&quot;https://pic.quanjing.com/jp/1w/QJ6144539261.jpg@!350h&quot;</span>,</span>
+<span class="line">        <span class="string">&quot;https://pic.quanjing.com/lv/8f/QJ6625036082.jpg@!350h&quot;</span>,</span>
+<span class="line">        <span class="string">&quot;https://pic.quanjing.com/12/90/QJ8124912494.jpg@!350h&quot;</span></span>
+<span class="line">    ]</span>
+<span class="line">    tasks = [download(url) <span class="keyword">for</span> url <span class="keyword">in</span> url_list]</span>
+<span class="line">    asyncio.run(asyncio.wait(tasks))</span>
+<span class="line"></span>
+<span class="line">main3()</span>
+<span class="line"><span class="comment"># 注：此案例耗费了线程池在等待任务结束，推荐使用aiohttp</span></span></code></pre>
+
+
+
+<h3 id="异步迭代器"><a href="#异步迭代器" class="headerlink" title="异步迭代器"></a>异步迭代器</h3><p>实现了 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3.8/reference/datamodel.html#object.__aiter__"><code>__aiter__()</code></a> 和 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3.8/reference/datamodel.html#object.__anext__"><code>__anext__()</code></a> 方法的对象，<code>__anext__</code> 必须返回一个 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3.8/glossary.html#term-awaitable">awaitable</a> 对象</p>
+<p><a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3.8/reference/compound_stmts.html#async-for"><code>async for</code></a> 会处理异步迭代器的 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3.8/reference/datamodel.html#object.__anext__"><code>__anext__()</code></a> 方法所返回的可等待对象，直到其引发一个 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3.8/library/exceptions.html#StopAsyncIteration"><code>StopAsyncIteration</code></a> 异常</p>
+<p>示例</p>
+<pre class="language-python line-numbers"><code class="language-python">
+<span class="line"><span class="keyword">import</span> asyncio</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">class</span> <span class="title class_">AsyncIterator</span>():</span>
+<span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span>
+<span class="line">        <span class="variable language_">self</span>.counter = <span class="number">0</span></span>
+<span class="line"></span>
+<span class="line">    <span class="keyword">def</span> <span class="title function_">__aiter__</span>(<span class="params">self</span>):</span>
+<span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span></span>
+<span class="line"></span>
+<span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">__anext__</span>(<span class="params">self</span>):</span>
+<span class="line">        <span class="keyword">if</span> <span class="variable language_">self</span>.counter &gt;= <span class="number">10</span>:</span>
+<span class="line">            <span class="keyword">raise</span> StopAsyncIteration</span>
+<span class="line">        <span class="variable language_">self</span>.counter += <span class="number">1</span></span>
+<span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span>.counter</span>
+<span class="line">    </span>
+<span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">func</span>():</span>
+<span class="line">    <span class="built_in">iter</span> = AsyncIterator()</span>
+<span class="line">    <span class="keyword">async</span> <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">iter</span>:</span>
+<span class="line">        <span class="built_in">print</span>(i)</span>
+<span class="line"></span>
+<span class="line">asyncio.run(func())</span></code></pre>
+
+
+
+<h3 id="异步上下文管理器"><a href="#异步上下文管理器" class="headerlink" title="异步上下文管理器"></a>异步上下文管理器</h3><p>定义 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3.8/reference/datamodel.html#object.__aenter__"><code>__aenter__()</code></a> 和 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3.8/reference/datamodel.html#object.__aexit__"><code>__aexit__()</code></a> 方法来对 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3.8/reference/compound_stmts.html#async-with"><code>async with</code></a> 语句中的环境进行控制</p>
+<p>示例</p>
+<pre class="language-python line-numbers"><code class="language-python">
+<span class="line"><span class="keyword">import</span> asyncio</span>
+<span class="line"></span>
+<span class="line"><span class="keyword">class</span> <span class="title class_">AsyncContextManager</span>:</span>
+<span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self,conn</span>):</span>
+<span class="line">        <span class="variable language_">self</span>.conn = conn</span>
+<span class="line"></span>
+<span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">__aenter__</span>(<span class="params">self</span>):</span>
+<span class="line">        <span class="comment"># 异步连接数据库</span></span>
+<span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;连接&#x27;</span>)</span>
+<span class="line">        <span class="variable language_">self</span>.conn = <span class="keyword">await</span> asyncio.sleep(<span class="number">2</span>) <span class="comment">#修改为数据库连接</span></span>
+<span class="line">        <span class="keyword">return</span> <span class="variable language_">self</span></span>
+<span class="line"></span>
+<span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">__aexit__</span>(<span class="params">self, exc_type, exc, tb</span>):</span>
+<span class="line">        <span class="comment"># 异步关闭数据库连接</span></span>
+<span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;关闭&#x27;</span>)</span>
+<span class="line">        <span class="keyword">await</span> asyncio.sleep(<span class="number">2</span>)  <span class="comment"># 修改为关闭数据库连接</span></span>
+<span class="line"></span>
+<span class="line">    <span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">do_something</span>(<span class="params">self</span>):</span>
+<span class="line">        <span class="comment">#操作数据库</span></span>
+<span class="line">        <span class="keyword">await</span> asyncio.sleep(<span class="number">2</span>)</span>
+<span class="line">        <span class="keyword">return</span> <span class="number">123</span></span>
+<span class="line"></span>
+<span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">func2</span>():</span>
+<span class="line">    <span class="keyword">async</span> <span class="keyword">with</span> AsyncContextManager(<span class="string">&#x27;conn&#x27;</span>) <span class="keyword">as</span> f:</span>
+<span class="line">        result = <span class="keyword">await</span> f.do_something()</span>
+<span class="line">        <span class="built_in">print</span>(result)</span>
+<span class="line"></span>
+<span class="line">asyncio.run(func2())</span></code></pre>
+
+<p>这个异步的上下文管理器还是比较有用的，平时在开发过程中 打开、处理、关闭 操作时，就可以用这种方式来处理。</p>
+<h3 id="uvloop"><a href="#uvloop" class="headerlink" title="uvloop"></a>uvloop</h3><p>uvloop是 asyncio 中的事件循环的替代方案，替换后可以使得asyncio性能提高</p>
+<p>示例</p>
+<pre class="language-python line-numbers"><code class="language-python">
+<span class="line"><span class="comment">#pip3 install uvloop</span></span>
+<span class="line"></span>
+<span class="line"><span class="keyword">import</span> asyncio</span>
+<span class="line"><span class="keyword">import</span> uvloop</span>
+<span class="line"></span>
+<span class="line"><span class="comment"># uvloop是asyncio的事件循环的代替方案. 事件循环&gt;默认asyncio的事件循环</span></span>
+<span class="line">asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())</span>
+<span class="line"></span>
+<span class="line"><span class="comment"># 与之前的一样</span></span>
+<span class="line"><span class="comment">#内部的事件循环自动转化为uvloop</span></span>
+<span class="line">asyncio.run(...)</span></code></pre>
+
+
+</div>
+  <!-- Utterances 评论系统 -->
+  <div id="vcomments"></div>
+  <script src="https://utteranc.es/client.js"
+        repo="lijun2002pop/lijun2002pop.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+</main>
+    <footer>
+  <div class="footer-info">© 2026 李俊 (ifan) | Powered by <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> | Theme <a
+      target="_blank" rel="noopener" href="https://github.com/mizoreyo/hexo-theme-insnow">Insnow</a></div>
+  <div class="footer-info">
+    <a class="footer-i" href="wx:if2024253645"><i class="iconfont icon-wechat"></i></a>
+    <a class="footer-i" target="_blank" rel="noopener" href="https://github.com/lijun2002pop"><i class="iconfont icon-github-fill"></i></a>
+    <a class="footer-i" href="/atom.xml"><i class="iconfont icon-rss"></i></a>
+    <a class="footer-i" href="mailto:2024253645@qq.com"><i class="iconfont icon-mail"></i></a>
+  </div>
+</footer>
+
+  </div>
+</body>
+
+
+</html>
